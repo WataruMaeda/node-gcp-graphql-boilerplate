@@ -1,0 +1,43 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      ['build', '-t', 'gcr.io/${_GOOGLE_PROJECT_ID}/${_CLOUD_RUN_SERVICE}', '.']
+    timeout: 500s
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/${_GOOGLE_PROJECT_ID}/${_CLOUD_RUN_SERVICE}']
+    timeout: 500s
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'deploy',
+        '${_CLOUD_RUN_SERVICE}',
+        '--image',
+        'gcr.io/${_GOOGLE_PROJECT_ID}/${_CLOUD_RUN_SERVICE}',
+        '--add-cloudsql-instances',
+        '${_GOOGLE_PROJECT_ID}:${_REGION}:${_CLOUD_SQL_INSTANCE_NAME}',
+        '--platform',
+        'managed',
+        '--region',
+        '${_REGION}',
+        '--allow-unauthenticated',
+      ]
+    timeout: 500s
+    env:
+      - 'GOOGLE_PROJECT_ID=${_GOOGLE_PROJECT_ID}'
+      - 'CLOUD_RUN_SERVICE=${_CLOUD_RUN_SERVICE}'
+      - 'REGION=${_REGION}'
+      - 'CLOUD_SQL_INSTANCE_NAME=${_CLOUD_SQL_INSTANCE_NAME}'
+substitutions:
+  _GOOGLE_PROJECT_ID: '{{project-id}}'
+  _CLOUD_RUN_SERVICE: '{{cloud-run-service-name}}'
+  _REGION: '{{region}}'
+  _CLOUD_SQL_INSTANCE_NAME: '{{cloud_sql_instance_name}}'
+options:
+  substitution_option: 'ALLOW_LOOSE'
+images:
+  - gcr.io/${_GOOGLE_PROJECT_ID}/${_CLOUD_RUN_SERVICE}

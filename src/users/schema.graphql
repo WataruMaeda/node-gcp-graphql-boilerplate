@@ -1,0 +1,9 @@
+input UserInput {
+  id: Int
+  name: String
+}
+
+type UserOutput {
+  id: Int
+  name: String
+}
