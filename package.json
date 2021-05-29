@@ -1,0 +1,68 @@
+{
+  "name": "node-gcp-graphql-boilerplate",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Node + Express + GraphQL + Firebase + PostgreSQL pre-setup template",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">= 12.0.0"
+  },
+  "scripts": {
+    "build": "node_modules/.bin/babel src -s -D -d dist",
+    "start": "NODE_ENV=development nodemon --exec babel-node src/index.js",
+    "start:prod": "npm run build && node dist",
+    "test": "jest --config ./jest.config.json --passWithNoTests",
+    "test:watch": "npm test -- --watch",
+    "lint": "node_modules/.bin/eslint src/ --quiet --fix",
+    "knex:dev": "knex migrate:rollback --env dev && knex migrate:latest --env dev && knex seed:run --env dev"
+  },
+  "author": "Wataru Maeda",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.23.0",
+    "apollo-server-express": "^2.23.0",
+    "bunyan": "^1.8.15",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "firebase-admin": "^9.6.0",
+    "fs": "0.0.1-security",
+    "graphql": "^15.5.0",
+    "graphql-input-types": "^1.1.1",
+    "graphql-tools": "^7.0.4",
+    "graphql-type-json": "^0.3.2",
+    "knex": "^0.95.4",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
+    "pg": "^8.6.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.13.16",
+    "@babel/eslint-parser": "^7.13.14",
+    "@babel/node": "^7.13.13",
+    "@babel/preset-env": "^7.13.15",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^4.3.8",
+    "jest": "^26.6.3",
+    "lint-staged": "^10.5.4",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "pretty-quick --staged",
+      "npm run lint",
+      "npm run test"
+    ]
+  }
+}

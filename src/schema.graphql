@@ -1,0 +1,37 @@
+directive @authenticated on FIELD_DEFINITION
+directive @admin on FIELD_DEFINITION
+
+# ------------------------------------
+# SCALAR
+# ------------------------------------
+
+scalar JSON
+
+# ------------------------------------
+# QUERIES
+# ------------------------------------
+
+type Query {
+  # users
+  demo: UserOutput
+  me: UserOutput @authenticated
+}
+
+# ------------------------------------
+# MUTATIONS
+# ------------------------------------
+
+type Mutation {
+  # users
+  createUser(input: UserInput!): UserOutput @authenticated
+  updateMe(input: UserInput!): UserOutput @authenticated
+}
+
+# ------------------------------------
+# SCHEMAS
+# ------------------------------------
+
+schema {
+  query: Query
+  mutation: Mutation
+}
