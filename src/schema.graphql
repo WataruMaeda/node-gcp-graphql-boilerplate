@@ -13,6 +13,7 @@ scalar JSON
 
 type Query {
   # users
+  demo: UserOutput
   me: UserOutput @authenticated
 }
 
@@ -22,6 +23,7 @@ type Query {
 
 type Mutation {
   # users
+  createUser(input: UserInput!): UserOutput @authenticated
   updateMe(input: UserInput!): UserOutput @authenticated
 }
 

@@ -6,6 +6,7 @@ exports.up = (knex) =>
   knex.schema.createTable('users', (table) => {
     table.increments('id').primary()
     table.string('name').notNullable()
+    table.string('email').notNullable()
     table.bigInteger('created_at').defaultTo(new Date().getTime())
     table.bigInteger('updated_at').defaultTo(new Date().getTime())
   })
@@ -22,7 +23,8 @@ exports.seed = (knex) =>
     .then(() =>
       knex('users').insert([
         {
-          name: 'Hello User',
+          name: 'John Doe',
+          email: 'john@test.com',
           created_at: new Date().getTime(),
           updated_at: new Date().getTime(),
         },

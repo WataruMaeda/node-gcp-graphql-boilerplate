@@ -17,7 +17,7 @@
 
 #### Step-3. Development Setup
 
-1. Click \***\*_Use Template_\*\*** to start or download the boilerplate from \***\*_Download Zip_\*\*** button
+1. Click **_Use Template_** to start or download the boilerplate from **Download Zip\*** button
 2. Open the project in the editor
 3. Run `npm install` in the project root directory
 4. (Optional) For VSCode user, rename "node-gcp-graphql-boilerplate" to your project name in launch.json under .vscode. Also please remove "editor.formatOnSave": true option if you are not willing to format code on save
@@ -52,10 +52,24 @@ FIREBASE_CLIENT_X509_CERT_URL={{client_x509_cert_url}}
 8. To test graphql query, please visit http://localhost:8080/graphql. Paste the following query and execute query by pressing ▷
 
 ```
+query demo {
+  demo {
+    id
+    name
+    email
+  }
+}
+```
+
+It should return demo user info.
+Then you can try the next query...
+
+```
 query me {
   me {
     id
     name
+    email
   }
 }
 ```

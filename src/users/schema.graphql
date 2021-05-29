@@ -1,9 +1,10 @@
 input UserInput {
-  id: Int
   name: String
+  email: String
 }
 
 type UserOutput {
   id: Int
   name: String
+  email: String
 }

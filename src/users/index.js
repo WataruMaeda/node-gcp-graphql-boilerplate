@@ -8,10 +8,12 @@ export const schema = [
 
 export const resolvers = {
   Query: {
+    demo: (root, args) => Users.getDemo(),
     me: (root, args, context) => Users.getMe(context),
   },
 
   Mutation: {
     updateMe: (root, { input }, context) => Users.updateMe(input, context),
+    createUser: (root, { input }, context) => Users.createUser(input, context),
   },
 }
