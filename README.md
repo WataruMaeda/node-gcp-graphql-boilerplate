@@ -1,28 +1,39 @@
-# Node-GCP-GraphQL-Boilerplate
+# GraphQL API on Google Cloud Run
 
-## 1. How to Use
+## What's included
+
+- [x] Build + Deploy to Cloud RUN with yaml file
+- [x] GraphQL Configuration
+- [x] Babel Configuration
+- [x] Verify token using Firebase Admin
+- [x] PostgreSQL client configuration
+- [x] Migration + Seeding with knex
+- [x] Linting, formatting, testing on pre-commit
+- [x] Autocorrect/format code on save (VSCode editor config)
+
+## How to Use
 
 #### Step-1. Create New Project
 
-1. Go to [GCP console](https://console.cloud.google.com/) and **_create new project_**
-2. Go to [Firebase console](https://console.firebase.google.com/u/0/) and **_create new project_**. Select the GCP project you created at 1
+1. Go to [GCP console](https://console.cloud.google.com/) and ***create new project***
+2. Go to [Firebase console](https://console.firebase.google.com/u/0/) and ***create new project***. Select the GCP project you created at 1
 3. Install Cloud SDK ([guide](https://cloud.google.com/sdk/docs/quickstart)) ※ skip if you already installed
 4. Open the terminal. Type command `gcloud init` to set the project you created in step 1
 5. `gcloud config set project ${your-project-id}` to set project id
 
 #### Step-2. Get keys
 
-1. Go to [Firebase console](https://console.firebase.google.com/u/0/) again and **_generate service account keys_**: ([guide](https://firebase.google.com/docs/admin/setup#initialize-sdk)).
-2. Go to [GCP console](https://console.cloud.google.com/) and select SQL. **_Create a new postgreSQL instance_**. For testing purpose, small machine (1 vCPU、3.75 GB) type with 10GB storage capacity preferable. In the networking section, you can register your [public IP](https://www.tunnelbear.com/whats-my-ip) to enable database access from your network. Once you done all settings, submit and wait until the instance ready. \***\*PLEASE NOTE\*\***: Please stop/shutdown your instance once you done testing. You will be charged the database instance fee if you are not in the free trial period.
+1. Go to [Firebase console](https://console.firebase.google.com/u/0/) again and ***generate service account keys***: ([guide](https://firebase.google.com/docs/admin/setup#initialize-sdk)).
+2. Go to [GCP console](https://console.cloud.google.com/) and select SQL. ***Create a new postgreSQL instance***. For testing purpose, small machine (1 vCPU、3.75 GB) type with 10GB storage capacity preferable. In the networking section, you can register your [public IP](https://www.tunnelbear.com/whats-my-ip) to enable database access from your network. Once you have done all settings, submit and wait until the instance ready. ***PLEASE NOTE***: Please stop/shut down your instance once you have done testing. You will be charged the database instance fee if you are not in the free trial period.
 
 #### Step-3. Development Setup
 
-1. Click **_Use Template_** to start or download the boilerplate from **Download Zip\*** button
+1. Click ***Use Template*** to start or download the boilerplate from ***Download Zip*** button
 2. Open the project in the editor
 3. Run `npm install` in the project root directory
-4. (Optional) For VSCode user, rename "node-gcp-graphql-boilerplate" to your project name in launch.json under .vscode. Also please remove "editor.formatOnSave": true option if you are not willing to format code on save
-5. Go to [knexfile.js]() and **_replace postgres keys_** to yours. **_Run knex file for migration/seeding_** with `npm run knex:dev`
-6. **_Add .env file_** in the project root directory and paste and **_replace {{???}} to your key_**
+4. (Optional) For VSCode users, rename "node-gcp-graphql-boilerplate" to your project name in launch.json under .vscode. Also please remove "editor.formatOnSave": true option if you are not willing to format code on save
+5. Go to [knexfile.js]() and ***replace postgres keys*** to yours. ***Run knex file for migration/seeding*** with `npm run knex:dev`
+6. ***Add .env file*** in the project root directory and paste and ***replace {{???}} to your key***
 
 ```
 # GCP
@@ -48,8 +59,8 @@ FIREBASE_AUTH_PROVIDER_X509_CERT_URL={{auth_provider_x509_cert_url}}
 FIREBASE_CLIENT_X509_CERT_URL={{client_x509_cert_url}}
 ```
 
-7. Run `npm start` to start api. It will start with http://localhost:8080
-8. To test graphql query, please visit http://localhost:8080/graphql. Paste the following query and execute query by pressing ▷
+7. Run `npm start` to start API. It will start with http://localhost:8080
+8. To test the graphql query, please visit http://localhost:8080/graphql. Paste the following query and execute the query by pressing ▷
 
 ```
 query demo {
@@ -78,7 +89,7 @@ You will see "Not authenticated" error. This is because of the endpoint is prote
 
 #### Step-4. Build and Deploy
 
-1. Go to [cloudbuild.yaml]() and **_replace {{???}} to your keys_**
+1. Go to [cloudbuild.yaml]() and ***replace {{???}} to your keys***
 
 ```
 _GOOGLE_PROJECT_ID: '{{project-id}}'
@@ -87,18 +98,18 @@ _REGION: '{{region}}'
 _CLOUD_SQL_INSTANCE_NAME: '{{sql-instance-name}}'
 ```
 
-2. Go to [GCP console](https://console.cloud.google.com/) and select **_Cloud Build_**. Select **_Setting_** from menu and **_Enable Cloud RUN_**. Select **_Add all permissions_** option
+2. Go to [GCP console](https://console.cloud.google.com/) and select ***Cloud Build***. Select ***Setting*** from menu and ***Enable Cloud RUN***. Select ***Add all permissions*** option
 3. Go to the project root directory and run `gcloud builds submit --config cloudbuild.yaml`
 
 ### Step-5. Setup VPN Network connector to connect PostgreSQL from Cloud Run
 
-1. Go to [GCP console](https://console.cloud.google.com/) and select **_SQL_**. Select SQL instance and **_start editing_**
-2. Turn on **_private IP_**. Enable **_Service Networking_**
-3. Select **_default_** VPC and select **_Automatically assigned IP range_**. Once you submit, you will see private ip address assigned
-4. Go to VPC Network. Select **_Serverless VPC Access_** from side menu. Press **_Create connector_** and complete the form. Set IP range is **_10.8.0.0_**
-5. Go back to **_Cloud Run_**. Select instance and edit again
-6. Select **_connection_** tab. Set **_VPC connector_** you created then **_deploy_**
-7. After deploy completed, Go to **_Cloud Run_** -> Select instance -> Edit -> Environment and secret -> **_put the following environmental variables_**. Please note: **_{{host}} should be private ip address_**. Not public address.
+1. Go to [GCP console](https://console.cloud.google.com/) and select ***SQL***. Select SQL instance and ***start editing***
+2. Turn on ***private IP***. Enable ***Service Networking***
+3. Select ***default*** VPC and select ***Automatically assigned IP range***. Once you submit, you will see private ip address assigned
+4. Go to VPC Network. Select ***Serverless VPC Access*** from side menu. Press ***Create connector*** and complete the form. Set IP range is ***10.8.0.0***
+5. Go back to ***Cloud Run***. Select instance and edit again
+6. Select ***connection*** tab. Set ***VPC connector*** you created then ***deploy***
+7. After deploy completed, Go to ***Cloud Run*** -> Select instance -> Edit -> Environment and secret -> ***put the following environmental variables***. Please note: ***{{host}} should be private ip address***. Not public address.
 
 ```
 POSTGRES_HOST={{host}}
@@ -121,6 +132,5 @@ FIREBASE_CLIENT_X509_CERT_URL={{client_x509_cert_url}}
 
 ### Step-6. Connect API from FE
 
-1. Please setup **_firebase authentication_** ([guide](https://www.apollographql.com/docs/react/get-started/)) and **_graphql_** ([guide](https://www.apollographql.com/docs/react/get-started/)) to your FE project.
-2. Once you logged in, firebase will return **_idToken_**
-3. Include the **_idToken_** in apollo client and trigger me query
+FE configuration is done in [react-firebase-boilerplate
+](https://github.com/WataruMaeda/react-firebase-boilerplate/tree/feat/graphql). If you prefer to setup by yourself, please follow the bellow instruction
